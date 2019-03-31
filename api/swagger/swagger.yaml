@@ -1,0 +1,257 @@
+---
+swagger: "2.0"
+info:
+  description: This is a swag API
+  version: 1.0.0
+  title: swag API
+  contact:
+    email: test@com.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: localhost:8080
+basePath: /
+tags:
+- name: cities
+  description: Cities
+- name: products
+  description: Products
+- name: users
+  description: Users
+schemes:
+  - http
+  - https
+produces:
+  - application/json
+paths:
+  /api/cities:
+    x-swagger-router-controller: cities
+    get:
+      tags:
+      - cities
+      summary: searches cities
+      description: |
+        You can get city
+      operationId: searchCity
+      produces:
+      - text/html
+      parameters: []
+      responses:
+        200:
+          description: Found city
+          schema:
+            $ref: '#/definitions/City'
+        404:
+          description: Not found
+  /api/products:
+    x-swagger-router-controller: products
+    get:
+      tags:
+      - products
+      summary: searches products
+      description: You can get a product
+      operationId: searchProducts
+      produces:
+      - text/html
+      parameters: []
+      responses:
+        200:
+          description: Found product
+          schema:
+            $ref: '#/definitions/City'
+        500:
+          description: Nothing was found
+    post:
+      tags:
+      - products
+      summary: adds product
+      description: Adds a product to the system
+      operationId: addProduct
+      consumes:
+      - application/x-www-form-urlencoded
+      produces:
+      - text/html
+      parameters:
+      - in: body
+        name: Product
+        description: Product to add
+        required: false
+        schema:
+          $ref: '#/definitions/Product'
+      responses:
+        200:
+          description: item created
+        400:
+          description: invalid input, object invalid
+        500:
+          description: Some error occured
+  /api/products/{productId}:
+    x-swagger-router-controller: products
+    get:
+      tags:
+      - products
+      summary: searches for product by id
+      description: |
+        You can get product
+      operationId: searchProduct
+      produces:
+      - text/html
+      parameters:
+      - name: productId
+        in: path
+        description: The user ID
+        required: true
+        type: string
+      responses:
+        200:
+          description: Found product
+          schema:
+            $ref: '#/definitions/Product'
+        404:
+          description: Not found
+  /api/products/{productId}/reviews:
+    x-swagger-router-controller: products
+    get:
+      tags:
+      - products
+      summary: searches for product reviews by id
+      description: |
+        You can get product reviews
+      operationId: searchProductReviews
+      produces:
+      - text/html
+      parameters:
+      - name: productId
+        in: path
+        description: The user ID
+        required: true
+        type: string
+      responses:
+        200:
+          description: Array of reviews for the project
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Review'
+        404:
+          description: Not found
+  /api/users:
+    x-swagger-router-controller: users
+    get:
+      tags:
+      - users
+      summary: searches for product by id
+      description: |
+        You can get users
+      operationId: searchUsers
+      produces:
+      - text/html
+      parameters: []
+      responses:
+        200:
+          description: Found users
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+        404:
+          description: Not found
+        500:
+          description: Something went wrong
+  /api/users/{userId}:
+    x-swagger-router-controller: users
+    get:
+      tags:
+      - users
+      summary: searches for user by id
+      description: |
+        You can get User
+      operationId: searchUser
+      produces:
+      - text/html
+      parameters:
+      - name: userId
+        in: path
+        description: The user ID
+        required: true
+        type: string
+      responses:
+        200:
+          description: Found product
+          schema:
+            $ref: '#/definitions/User'
+        404:
+          description: Not found
+        500:
+          description: Something went wrong
+definitions:
+  City:
+    type: object
+    required:
+    - capital
+    - country
+    - id
+    - name
+    properties:
+      id:
+        type: string
+        format: uuid
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      name:
+        type: string
+        example: Brest
+      country:
+        type: string
+        example: Belarus
+      capital:
+        type: boolean
+        example: false
+  Product:
+    required:
+    - name
+    properties:
+      id:
+        type: string
+        format: uuid
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      name:
+        type: string
+        example: Bunny
+      reviews:
+        type: array
+        items:
+          $ref: '#/definitions/Review'
+  Review:
+    properties:
+      title:
+        type: string
+        example: Fluffy
+      fulltext:
+        type: string
+        format: text
+        example: Very fluffy
+  User:
+    required:
+    - email
+    - login
+    - password
+    - userName
+    properties:
+      id:
+        type: string
+        format: uuid
+        example: d290f1ee-6c54-4b01-905-d701748f0851
+      userName:
+        type: string
+        example: Bunny Smith
+      login:
+        type: string
+        example: Bunny101
+      email:
+        type: string
+        format: email
+        example: Bunny101@com.com
+      password:
+        type: string
+        format: password
+        example: ""
