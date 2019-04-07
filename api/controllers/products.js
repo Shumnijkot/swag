@@ -6,7 +6,8 @@ module.exports = {
     searchProducts: searchProducts,
     addProduct,
     searchProduct,
-    searchProductReviews
+    searchProductReviews,
+    deleteProduct
   };
 
 function searchProducts(req, res) {
@@ -56,6 +57,28 @@ function searchProduct(req, res) {
             }
             res.send(JSON.stringify(result));
 
+        }
+    ).catch(err=>{
+        res.send(err);
+
+    })
+}
+
+function deleteProduct(req, res) {
+
+    const id  = req.swagger.params.productId.value;
+    const castedId = mongoose.Types.ObjectId(id);
+
+    if(!id){
+        res.status(404).send("Wrong id");
+    }
+    productModel.findById(castedId).remove().then(
+        result=>{
+            if(!result){
+                res.sendStatus(404);
+
+            }
+            res.send(JSON.stringify(result));
         }
     ).catch(err=>{
         res.send(err);

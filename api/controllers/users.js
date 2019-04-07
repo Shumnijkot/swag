@@ -3,7 +3,8 @@ var UserModel = require("../models/UserModel");
 
 module.exports = {
     searchUsers,
-    searchUser
+    searchUser,
+    deleteUser
   };
 
 function searchUsers(req, res) {
@@ -24,6 +25,28 @@ function searchUser(req, res) {
         res.status(404).send("Wrong id");
     }
     UserModel.findById(castedId).then(
+        result=>{
+            if(!result){
+                res.sendStatus(404);
+
+            }
+            res.send(JSON.stringify(result));
+
+        }
+    ).catch(err=>{
+        res.send(err);
+
+    })
+}
+function deleteUser(req, res) {
+
+    const id  = req.swagger.params.userId.value;
+    const castedId = mongoose.Types.ObjectId(id);
+
+    if(!id){
+        res.status(404).send("Wrong id");
+    }
+    UserModel.findById(castedId).remove().then(
         result=>{
             if(!result){
                 res.sendStatus(404);

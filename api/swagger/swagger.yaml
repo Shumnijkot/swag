@@ -43,6 +43,91 @@ paths:
             $ref: '#/definitions/City'
         404:
           description: Not found
+  /api/cities/{cityId}:
+    x-swagger-router-controller: cities
+    get:
+      tags:
+      - cities
+      summary: searches for city by id
+      description: |
+        You can get city by id
+      operationId: searchCityById
+      produces:
+      - text/html
+      parameters:
+      - name: cityId
+        in: path
+        description: The city ID
+        required: true
+        type: string
+      responses:
+        200:
+          description: Found city
+          schema:
+            $ref: '#/definitions/City'
+        404:
+          description: Not found
+    delete:
+      tags:
+      - cities
+      summary: deletes City
+      description: |
+        deletes product
+      operationId: deleteCity
+      produces:
+      - text/html
+      parameters:
+      - name: cityId
+        in: path
+        description: The city ID
+        required: true
+        type: string
+      responses:
+        200: 
+          description: Ok
+        404:
+          description: Not found
+        500:
+          description: Error
+    put:
+      tags:
+      - cities
+      summary: updates city
+      description: |
+        Adds a city to the system
+      operationId: putCity
+      consumes:
+      - application/x-www-form-urlencoded
+      produces:
+      - text/html
+      parameters:
+      - in: path
+        name: cityId
+        description: The city ID
+        required: true
+        type: string
+      - in: formData
+        name: name
+        description: city properties
+        required: true
+        type: string
+      - in: formData
+        name: country
+        description: city properties
+        required: true
+        type: string
+      - in: formData
+        name: capital
+        description: city properties
+        required: true
+        type: boolean
+      responses:
+        200:
+          description: item created
+        400:
+          description: invalid input, object invalid
+        500:
+          description: Some error occured
   /api/products:
     x-swagger-router-controller: products
     get:
@@ -109,6 +194,28 @@ paths:
             $ref: '#/definitions/Product'
         404:
           description: Not found
+    delete:
+      tags:
+      - users
+      summary: deletes Product
+      description: |
+        deletes product
+      operationId: deleteProduct
+      produces:
+      - text/html
+      parameters:
+      - name: productId
+        in: path
+        description: The product ID
+        required: true
+        type: string
+      responses:
+        200: 
+          description: Ok
+        404:
+          description: Not found
+        500:
+          description: Error
   /api/products/{productId}/reviews:
     x-swagger-router-controller: products
     get:
@@ -184,13 +291,34 @@ paths:
           description: Not found
         500:
           description: Something went wrong
+    delete:
+      tags:
+      - users
+      summary: deletes User
+      description: |
+        deletes user
+      operationId: deleteUser
+      produces:
+      - text/html
+      parameters:
+      - name: userId
+        in: path
+        description: The user ID
+        required: true
+        type: string
+      responses:
+        200: 
+          description: Ok
+        404:
+          description: Not found
+        500:
+          description: Error
 definitions:
   City:
     type: object
     required:
     - capital
     - country
-    - id
     - name
     properties:
       id:
